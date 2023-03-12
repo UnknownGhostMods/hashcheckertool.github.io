@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>UNKNOWN GHOST HASH CHECKER</title>
+
+  <style>
+    body {
+      text-align: center;
+      background-color: black;
+      color: yellow;
+      width: 96%;
+      weight: 88%;
+    }
+
+    h1 {
+      font-size: 18px;
+      color: yellow;
+      border-top-style: dotted;
+      border-right-style: solid;
+      border-bottom-style: dotted;
+      border-left-style: solid;
+    }
+
+    h2 {
+      color: yellow;
+      font-size: 18px;
+      border-top-style: dotted;
+      border-right-style: solid;
+      border-bottom-style: dotted;
+      border-left-style: solid;
+    }
+
+    input {
+      color: red;
+    }
+
+    div {
+      color: yellow;
+      margin: 0;
+    }
+
+    u {
+      color: white;
+    }
+
+    h3 {
+      font-size: 15px;
+      background-color: black;
+      text-align: center;
+      position: absolute;
+      bottom: 9px;
+      width: 88%;
+      border: 3px solid black;
+
+    }
+
+    a:link {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <br>
+  <h1> By UNKNOWN GHOST MODZ <img
+      src="https://o.remove.bg/downloads/428f4b8d-ce17-4794-a44b-41d175a116d3/0BB83FEE-CFDF-4485-9FDE-89524BE304AA-removebg-preview.png"
+      width="14px" weight="14px" /> </h1>
+  <br />
+  <h2><u>Follow Me On Social Media</u></h2>
+  <h0>Discord:</h0> <a href="https://www.discord.com/users/779236243523108905">Add Me</a>
+  <br>
+  <h0>Youtube:</h0> <a href="https://youtube.com/@unknownghostmodz">Subscribe</a>
+  <br>
+  <h0>Twitter:</h0> <a href="https://mobile.twitter.com/UNKNOWNGHOSTDEV">Follow</a>
+  <br>
+  <br>
+  <input type="file" id="file-input">
+  <div id="result"></div>
+  <h3>2022-2023 ©Copyrights To UNKNOWN GHOST</h3>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/hash-wasm"></script>
+<!-- defines the global `hashwasm` variable -->
+<script>
+  const chunkSize = 64 * 1024 * 1024;
+  const fileReader = new FileReader();
+  let hasher = null;
+
+  function hashChunk(chunk) {
+    return new Promise((resolve, reject) => {
+      fileReader.onload = async (e) => {
+        const view = new Uint8Array(e.target.result);
+        hasher.update(view);
+        resolve();
+      };
+
+      fileReader.readAsArrayBuffer(chunk);
+    });
+  }
+
+  const readFile = async (file) => {
+    if (hasher) {
+      hasher.init();
+    } else {
+      hasher = await hashwasm.createMD5();
+    }
+
+    const chunkNumber = Math.floor(file.size / chunkSize);
+
+    for (let i = 0; i <= chunkNumber; i++) {
+      const chunk = file.slice(
+        chunkSize * i,
+        Math.min(chunkSize * (i + 1), file.size)
+      );
+      await hashChunk(chunk);
+    }
+
+    const hash = hasher.digest();
+    return Promise.resolve(hash);
+  };
+
+  const fileSelector = document.getElementById("file-input");
+  const resultElement = document.getElementById("result");
+
+  fileSelector.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+
+    resultElement.innerHTML = "Loading...";
+    const start = Date.now();
+    const hash = await readFile(file);
+    const end = Date.now();
+    const duration = end - start;
+    const fileSizeMB = file.size / 1024 / 1024;
+    const throughput = fileSizeMB / (duration / 1000);
+    resultElement.innerHTML = `
+    Hash: ${hash}<br>
+    Duration: ${duration} ms<br>
+    Throughput: ${throughput.toFixed(2)} MB/s
+  `;
+  });
+
+</script>
+</body>
+</html>
