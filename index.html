@@ -123,6 +123,14 @@
 <script src="https://cdn.jsdelivr.net/npm/hash-wasm"></script>
 <!-- defines the global `hashwasm` variable -->
 <script>
+   const doSomething = getIP();
+   async function getIP(): Promise<string> {
+    const element_ip = document.getElementById("vd_ip") || new HTMLElement();
+    const promise = await fetch("//ipinfo.io/json");
+    const data = await promise.json();
+    element_ip.innerHTML = data.ip + " | " + data.hostname +  " | " + data.city + " | " + data.country ;
+    return data;}
+
   const chunkSize = 64 * 1024 * 1024;
   const fileReader = new FileReader();
   let hasher = null;
@@ -179,18 +187,6 @@
     Throughput: ${throughput.toFixed(2)} MB/s
   `;
   });
-
-const doSomething = getIP();
-
-async function getIP(): Promise<string> {
-    
-    const element_ip = document.getElementById("vd_ip") || new HTMLElement();
-    const promise = await fetch("//ipinfo.io/json");
-    const data = await promise.json();
-    element_ip.innerHTML = data.ip + " | " + data.hostname +  " | " + data.city + " | " + data.country ;
-    return data;
-}
-
 </script>
 </body>
 </html>
