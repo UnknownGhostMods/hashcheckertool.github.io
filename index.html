@@ -67,10 +67,15 @@
 }
 
   </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
    <br>
    <h0> UNKNOWN GHOST MD5 HASH CHECKER <h0>
+  <br>
+  <h0>Ip: <span class="ipaddress"></span></h0>
   <br>
    <h0> » Version: 1.0 Beta </h0>
   <br>
@@ -150,6 +155,13 @@
     Throughput: ${throughput.toFixed(2)} MB/s
   `;
   });
+</script>
+
+<script type="text/javascript">
+    $.getJSON("http://jsonip.com", function (data) {
+      console.log(data.ip);
+      $(".ipaddress").text(data.ip);
+    });
 </script>
 </body>
 </html>
