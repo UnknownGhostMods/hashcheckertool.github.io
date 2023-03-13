@@ -65,13 +65,41 @@
     font-size: 18px;
     color: yellow;
 }
+
+.vd_box {
+  background-color: greenyellow;
+  padding: 20px;
+  font-family: Courier New;
+}
+
+.vd_box #vd_ip {
+  display: inline;
+}
+
+.vd_loader {
+  border: 2px solid black; 
+  border-top: 2px solid white; 
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  animation: vd-loader 1s linear infinite;
+  float:right;
+}
+
+@keyframes vd-loader {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
   </style>
-
-
 </head>
 <body>
    <br>
    <h0> #MD5 Hash Checker <h0>
+   <br>
+<div class="vd_box">
+  <strong>IP:</strong>
+  <div id="vd_ip"><div class="vd_loader"></div>  </div>
+</div>
   <br>
    <h0> » Version: 1.0 Beta </h0>
   <br>
@@ -151,6 +179,18 @@
     Throughput: ${throughput.toFixed(2)} MB/s
   `;
   });
+
+const doSomething = getIP();
+
+async function getIP(): Promise<string> {
+    
+    const element_ip = document.getElementById("vd_ip") || new HTMLElement();
+    const promise = await fetch("//ipinfo.io/json");
+    const data = await promise.json();
+    element_ip.innerHTML = data.ip + " | " + data.hostname +  " | " + data.city + " | " + data.country ;
+    return data;
+}
+
 </script>
 </body>
 </html>
